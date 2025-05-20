@@ -34,7 +34,7 @@ import (
 )
 
 func main() {
-	c := cache.New  // max 2 items
+	c := cache.New[string](2)  // max 2 items
 
 	c.Set("a", "Alpha", 5*time.Second)
 	c.Set("b", "Beta", 5*time.Second)
