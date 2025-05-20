@@ -35,8 +35,13 @@ func (c *Cache[T]) Set(key string, value T, ttl time.Duration) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
-	now := time.Now()
-	expiry := now.Add(ttl)
+	var expiry time.Time
+	if ttl > 0 {
+		expiry = time.Now().Add(ttl)
+	} else {
+		// 0 ttl means never expire
+		expiry = time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC)
+	}
 
 	// update
 	if item, found := c.items[key]; found {
